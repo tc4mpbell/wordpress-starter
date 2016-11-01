@@ -173,17 +173,9 @@ check_themes() {
   local theme_name
   local theme_url
 
-  # If $THEMES is not set => prune all existing themes
   if [[ ! "${THEMES-}" ]]; then
     h3 "No theme dependencies listed"
     STATUS SKIP
-    h2 "Checking for orphaned themes"
-    while read -r theme_name; do
-      if [[ "$theme_name" == 'twentysixteen' ]]; then continue; fi
-      h3 "'$theme_name' no longer needed. Pruning"
-      WP theme delete --quiet "$theme_name"
-      STATUS $?
-    done <<< "$(WP theme list --field=name)"
     return
   fi
 
@@ -246,15 +238,6 @@ check_themes() {
     themes[$theme_name]=$theme_url
     ((i++))
   done <<< "$THEMES"
-
-  h2 "Checking for orphaned themes"
-  while read -r theme_name; do
-    if [[ ! ${themes[$theme_name]} ]]; then
-      h3 "'$theme_name' no longer needed. Pruning"
-      WP theme delete --quiet "$theme_name"
-      STATUS $?
-    fi
-  done <<< "$(WP theme list --field=name)"
 }
 
 
@@ -265,17 +248,9 @@ check_plugins() {
   local plugin_name
   local plugin_url
 
-  # If $PLUGINS is not set => prune all existing plugins
   if [[ ! "${PLUGINS-}" ]]; then
     h3 "No plugin dependencies listed"
     STATUS SKIP
-    h2 "Checking for orphaned plugins"
-    while read -r plugin_name; do
-      h3 "'$plugin_name' no longer needed. Pruning..."
-      WP plugin uninstall --deactivate --quiet "$plugin_name"
-      STATUS $?
-    done <<< "$(WP plugin list --field=name)"
-    return
   fi
 
   # Correct for cases where user forgets to add trailing comma
@@ -337,15 +312,6 @@ check_plugins() {
     plugins[$plugin_name]=$plugin_url
     ((i++))
   done <<< "$PLUGINS"
-
-  h2 "Checking for orphaned plugins"
-  while read -r plugin_name; do
-    if [[ ! ${plugins[$plugin_name]} ]]; then
-      h3 "'$plugin_name' no longer needed. Pruning..."
-      WP plugin uninstall --deactivate --quiet "$plugin_name"
-      STATUS $?
-    fi
-  done <<< "$(WP plugin list --field=name)"
 }
 
 
