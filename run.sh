@@ -311,12 +311,6 @@ check_plugins() {
     plugins[$plugin_name]=$plugin_url
     ((i++))
   done <<< "$PLUGINS"
-
-  h2 "Checking for orphaned plugins"
-  while read -r plugin_name; do
-    if [[ ! ${plugins[$plugin_name]} ]]; then
-    fi
-  done <<< "$(WP plugin list --field=name)"
 }
 
 
