@@ -7,6 +7,7 @@ VERBOSE=${VERBOSE:-false}
 
 # Environment
 # ------------
+DB_USER=${DB_USER:-'root'}
 DB_HOST=${DB_HOST:-'db'}
 DB_NAME=${DB_NAME:-'wordpress'}
 DB_PASS=${DB_PASS:-'root'}
@@ -28,7 +29,7 @@ apache_modules:
   - mod_rewrite
 
 core config:
-  dbuser: root
+  dbuser: $DB_USER
   dbpass: $DB_PASS
   dbname: $DB_NAME
   dbprefix: $DB_PREFIX
