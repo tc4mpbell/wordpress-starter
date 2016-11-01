@@ -250,6 +250,7 @@ check_plugins() {
   if [[ ! "${PLUGINS-}" ]]; then
     h3 "No plugin dependencies listed"
     STATUS SKIP
+    return
   fi
 
   # Correct for cases where user forgets to add trailing comma
